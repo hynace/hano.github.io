@@ -244,7 +244,7 @@
     const lines = Array.isArray(post.content) ? post.content : [post.content];
     contentEl.textContent = "";
     lines
-      .map((line) => (line === null || line === undefined ? "" : String(line)).trim())
+      .map((line) => String(line ?? "").trim())
       .filter(Boolean)
       .forEach((line) => {
         const p = document.createElement("p");
