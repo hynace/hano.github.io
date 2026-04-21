@@ -176,10 +176,10 @@
 
     const boardLabelMap = Object.fromEntries(boards.map((b) => [b.key, b.label]));
     const merged = posts.map((p) => ({ ...p, boardLabel: boardLabelMap[p.board] || p.board }));
-    recentPosts.innerHTML = sortByDateDesc(merged)
-      .slice(0, 6)
-      .map(toPostItem)
-      .join("") || `<li class="post-item">아직 등록된 글이 없습니다.</li>`;
+    const recentItems = sortByDateDesc(merged).slice(0, 6).map(toPostItem);
+    recentPosts.innerHTML = recentItems.length
+      ? recentItems.join("")
+      : `<li class="post-item">아직 등록된 글이 없습니다.</li>`;
 
     setupPostForm(data);
   }
@@ -244,7 +244,7 @@
     const lines = Array.isArray(post.content) ? post.content : [post.content];
     contentEl.textContent = "";
     lines
-      .map((line) => (line == null ? "" : String(line)).trim())
+      .map((line) => (line === null || line === undefined ? "" : String(line)).trim())
       .filter(Boolean)
       .forEach((line) => {
         const p = document.createElement("p");
