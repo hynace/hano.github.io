@@ -26,10 +26,39 @@
       </section>
 
       <section class="card full-width">
+        <h2>새 글 작성</h2>
+        <form id="post-form" class="post-form">
+          <label>
+            게시판
+            <select id="form-board" required></select>
+          </label>
+          <label>
+            제목
+            <input id="form-title" type="text" maxlength="120" required placeholder="제목을 입력하세요" />
+          </label>
+          <label>
+            날짜
+            <input id="form-date" type="date" required />
+          </label>
+          <label>
+            내용
+            <textarea
+              id="form-content"
+              rows="6"
+              required
+              placeholder="문단을 줄바꿈으로 구분해서 작성하세요"
+            ></textarea>
+          </label>
+          <button type="submit">글 등록</button>
+          <p id="form-message" class="form-message" aria-live="polite"></p>
+        </form>
+      </section>
+
+      <section class="card full-width">
         <h2>소개</h2>
         <p>
           이 페이지는 정적 파일만으로 구성되어 GitHub Pages에서 바로 동작합니다.
-          게시판별 글 목록과 메인 최신 글은 동일한 데이터 파일을 읽어 자동 반영됩니다.
+          게시판별 글 목록과 메인 최신 글은 동일한 데이터 파일 + 브라우저 저장소(localStorage)를 읽어 자동 반영됩니다.
         </p>
       </section>
     </main>
