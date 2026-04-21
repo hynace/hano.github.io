@@ -65,20 +65,22 @@
     return new URLSearchParams(window.location.search);
   }
 
-  function escapeHtml(value) {
-    return String(value ?? "")
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#39;");
-  }
-
   function toPostItem(post) {
-    return `<li class="post-item">
-      <a class="post-link" href="post.html?board=${encodeURIComponent(post.board)}&id=${encodeURIComponent(post.id)}">${escapeHtml(post.title)}</a>
-      <p class="post-meta">${escapeHtml(post.date)} · ${escapeHtml(post.boardLabel)}</p>
-    </li>`;
+    const item = document.createElement("li");
+    item.className = "post-item";
+
+    const link = document.createElement("a");
+    link.className = "post-link";
+    link.href = `post.html?board=${encodeURIComponent(post.board)}&id=${encodeURIComponent(post.id)}`;
+    link.textContent = String(post.title ?? "");
+
+    const meta = document.createElement("p");
+    meta.className = "post-meta";
+    meta.textContent = `${String(post.date ?? "")} · ${String(post.boardLabel ?? "")}`;
+
+    item.appendChild(link);
+    item.appendChild(meta);
+    return item;
   }
 
   function sortByDateDesc(posts) {
@@ -105,9 +107,13 @@
     const messageEl = document.getElementById("form-message");
 
     const boards = Array.isArray(data.boards) ? data.boards : [];
-    boardSelect.innerHTML = boards
-      .map((board) => `<option value="${escapeHtml(board.key)}">${escapeHtml(board.label)}</option>`)
-      .join("");
+    boardSelect.innerHTML = "";
+    boards.forEach((board) => {
+      const option = document.createElement("option");
+      option.value = board.key;
+      option.textContent = board.label;
+      boardSelect.appendChild(option);
+    });
 
     if (!boards.length) {
       messageEl.textContent = "게시판이 없어 글을 등록할 수 없습니다.";
@@ -167,19 +173,29 @@
     const boardLinks = document.getElementById("board-links");
     const recentPosts = document.getElementById("recent-posts");
 
-    boardLinks.innerHTML = boards
-      .map(
-        (board) =>
-          `<a class="board-chip" href="board.html?board=${encodeURIComponent(board.key)}">${escapeHtml(board.label)}</a>`
-      )
-      .join("");
+    boardLinks.innerHTML = "";
+    boards.forEach((board) => {
+      const boardLink = document.createElement("a");
+      boardLink.className = "board-chip";
+      boardLink.href = `board.html?board=${encodeURIComponent(board.key)}`;
+      boardLink.textContent = board.label;
+      boardLinks.appendChild(boardLink);
+    });
 
     const boardLabelMap = Object.fromEntries(boards.map((b) => [b.key, b.label]));
     const merged = posts.map((p) => ({ ...p, boardLabel: boardLabelMap[p.board] || p.board }));
-    const recentItems = sortByDateDesc(merged).slice(0, 6).map(toPostItem);
-    recentPosts.innerHTML = recentItems.length
-      ? recentItems.join("")
-      : `<li class="post-item">아직 등록된 글이 없습니다.</li>`;
+    const recentItems = sortByDateDesc(merged).slice(0, 6);
+    recentPosts.innerHTML = "";
+    if (!recentItems.length) {
+      const emptyItem = document.createElement("li");
+      emptyItem.className = "post-item";
+      emptyItem.textContent = "아직 등록된 글이 없습니다.";
+      recentPosts.appendChild(emptyItem);
+    } else {
+      recentItems.forEach((post) => {
+        recentPosts.appendChild(toPostItem(post));
+      });
+    }
 
     setupPostForm(data);
   }
@@ -207,9 +223,18 @@
       .filter((p) => p.board === boardKey)
       .map((p) => ({ ...p, boardLabel: board ? board.label : p.board }));
 
-    listEl.innerHTML = posts.length
-      ? posts.map(toPostItem).join("")
-      : `<li class="post-item">아직 등록된 글이 없습니다.</li>`;
+    listEl.innerHTML = "";
+    if (!posts.length) {
+      const emptyItem = document.createElement("li");
+      emptyItem.className = "post-item";
+      emptyItem.textContent = "아직 등록된 글이 없습니다.";
+      listEl.appendChild(emptyItem);
+      return;
+    }
+
+    posts.forEach((post) => {
+      listEl.appendChild(toPostItem(post));
+    });
   }
 
   async function renderPost() {
@@ -241,7 +266,11 @@
 
     titleEl.textContent = post.title;
     metaEl.textContent = `${post.date} · ${board ? board.label : boardKey}`;
-    const lines = Array.isArray(post.content) ? post.content : [post.content];
+    const lines = Array.isArray(post.content)
+      ? post.content
+      : post.content === null || post.content === undefined
+        ? []
+        : [post.content];
     contentEl.textContent = "";
     lines
       .map((line) => String(line ?? "").trim())
