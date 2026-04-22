@@ -6,12 +6,12 @@ backend:
   auth_endpoint: auth
   use_graphql: true
 
-site_url: https://hynace.github.io
-display_url: https://hynace.github.io
-logo_url: /images/default-card.svg
+site_url: https://hynace.github.io/hano.github.io/
+display_url: https://hynace.github.io/hano.github.io/
+logo_url: /hano.github.io/images/default-card.svg
 locale: ko
 media_folder: static/uploads
-public_folder: /uploads
+public_folder: /hano.github.io/uploads
 
 collections:
   - name: settings

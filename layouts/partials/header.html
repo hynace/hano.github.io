@@ -1,7 +1,7 @@
 {{ $current := .RelPermalink }}
 <header class="site-header">
   <div class="container site-header__inner">
-    <a class="brand" href="{{ "/" | relURL }}">
+    <a class="brand" href="{{ site.Home.RelPermalink }}">
       <span class="brand__dot"></span>
       <span class="brand__text">{{ site.Data.site.brand }}</span>
     </a>
