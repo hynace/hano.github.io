@@ -9,7 +9,8 @@
     <nav class="site-nav" aria-label="Primary navigation">
       {{ range site.Menus.main }}
         {{ $itemURL := .URL | relURL }}
-        {{ $active := or (eq $current $itemURL) (and (ne $itemURL "/") (hasPrefix $current $itemURL)) }}
+        {{ $isHome := eq .Identifier "home" }}
+        {{ $active := cond $isHome (eq $current $itemURL) (or (eq $current $itemURL) (hasPrefix $current $itemURL)) }}
         <a class="site-nav__link{{ if $active }} is-active{{ end }}" href="{{ $itemURL }}">
           {{ .Name }}
         </a>
