@@ -1,0 +1,67 @@
+{{ define "main" }}
+  {{ if eq .Section "about" }}
+    <section class="hero hero--compact">
+      <div class="container container--narrow">
+        <p class="eyebrow">About</p>
+        <h1>{{ .Title }}</h1>
+        {{ with .Params.description }}
+          <p class="hero__lede">{{ . }}</p>
+        {{ end }}
+      </div>
+    </section>
+
+    <section class="section section--narrow">
+      <div class="container container--narrow prose">
+        {{ .Content }}
+      </div>
+    </section>
+  {{ else }}
+    {{ $entries := .RegularPagesRecursive.ByDate.Reverse }}
+    <section class="hero hero--compact">
+      <div class="container board-hero">
+        <div>
+          <p class="eyebrow">{{ .Section }}</p>
+          <h1>{{ .Title }}</h1>
+          {{ with .Params.description }}
+            <p class="hero__lede">{{ . }}</p>
+          {{ end }}
+          {{ with .Params.lead }}
+            <p class="hero__lede hero__lede--sub">{{ . }}</p>
+          {{ end }}
+        </div>
+
+        <div class="board-hero__actions">
+          <a class="button button--primary" href="{{ printf "%s#/collections/%s/new" ("/admin/" | relURL) .Section }}">
+            {{ .Params.write_label | default "새 글 작성" }}
+          </a>
+          <a class="button button--ghost" href="{{ "/admin/" | relURL }}">CMS 열기</a>
+        </div>
+      </div>
+    </section>
+
+    {{ if .Content }}
+      <section class="section">
+        <div class="container prose prose--board">
+          {{ .Content }}
+        </div>
+      </section>
+    {{ end }}
+
+    <section class="section">
+      <div class="container section__heading">
+        <div>
+          <p class="eyebrow">{{ len $entries }} Posts</p>
+          <h2>{{ .Title }} 글 목록</h2>
+        </div>
+      </div>
+
+      <div class="container post-grid">
+        {{ range $entries }}
+          {{ partial "post-card.html" . }}
+        {{ else }}
+          <div class="empty-state">아직 등록된 글이 없습니다.</div>
+        {{ end }}
+      </div>
+    </section>
+  {{ end }}
+{{ end }}

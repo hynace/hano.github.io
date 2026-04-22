@@ -1,0 +1,85 @@
+{{ define "main" }}
+  {{ $posts := where site.RegularPages "Section" "in" (slice "gallery" "notice") }}
+  {{ $latest := first 6 ($posts.ByDate.Reverse) }}
+  {{ $gallery := where site.RegularPages "Section" "gallery" }}
+  {{ $notice := where site.RegularPages "Section" "notice" }}
+  {{ $galleryPage := site.GetPage "section" "gallery" }}
+  {{ $noticePage := site.GetPage "section" "notice" }}
+
+  <section class="hero">
+    <div class="container hero__grid">
+      <div class="hero__copy">
+        <p class="eyebrow">{{ site.Data.site.tagline }}</p>
+        <h1>{{ site.Data.site.hero_title }}</h1>
+        <p class="hero__lede">{{ site.Data.site.hero_lede }}</p>
+        <p class="hero__lede hero__lede--sub">{{ site.Data.site.hero_support }}</p>
+
+        <div class="hero__actions">
+          <a class="button button--primary" href="{{ "/gallery/" | relURL }}">갤러리 보기</a>
+          <a class="button button--ghost" href="{{ "/notice/" | relURL }}">Notice 보기</a>
+        </div>
+      </div>
+
+      <div class="hero__art">
+        <img src="{{ site.Data.site.hero_image | relURL }}" alt="Homepage visual" />
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container section__split">
+      <article class="panel">
+        <p class="eyebrow">{{ site.Data.site.overview_title }}</p>
+        <h2>홈페이지 구성</h2>
+        <p>{{ site.Data.site.overview_body }}</p>
+      </article>
+
+      <article class="panel">
+        <p class="eyebrow">{{ site.Data.site.workflow_title }}</p>
+        <h2>운영 흐름</h2>
+        <p>{{ site.Data.site.workflow_body }}</p>
+        <a class="inline-link" href="mailto:{{ site.Data.site.contact_email }}">{{ site.Data.site.contact_email }}</a>
+      </article>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container section__heading">
+      <div>
+        <p class="eyebrow">Boards</p>
+        <h2>게시판</h2>
+      </div>
+    </div>
+
+    <div class="container board-grid">
+      <a class="board-tile" href="{{ "/gallery/" | relURL }}">
+        <p class="eyebrow">Gallery</p>
+        <h3>{{ $galleryPage.Title }}</h3>
+        <p>{{ $galleryPage.Params.description }}</p>
+        <span class="board-tile__meta">{{ len $gallery }} posts</span>
+      </a>
+
+      <a class="board-tile" href="{{ "/notice/" | relURL }}">
+        <p class="eyebrow">Notice</p>
+        <h3>{{ $noticePage.Title }}</h3>
+        <p>{{ $noticePage.Params.description }}</p>
+        <span class="board-tile__meta">{{ len $notice }} posts</span>
+      </a>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container section__heading">
+      <div>
+        <p class="eyebrow">Recent Updates</p>
+        <h2>최신 글</h2>
+      </div>
+    </div>
+
+    <div class="container post-grid">
+      {{ range $latest }}
+        {{ partial "post-card.html" . }}
+      {{ end }}
+    </div>
+  </section>
+{{ end }}

@@ -1,0 +1,39 @@
+baseURL: https://hynace.github.io/
+languageCode: ko-KR
+title: HANO
+timeZone: Asia/Seoul
+enableRobotsTXT: true
+
+pagination:
+  pagerSize: 12
+
+permalinks:
+  gallery: /gallery/:slug/
+  notice: /notice/:slug/
+
+markup:
+  goldmark:
+    renderer:
+      unsafe: true
+
+menus:
+  main:
+    - identifier: home
+      name: 메인페이지
+      url: /
+      weight: 10
+    - identifier: about
+      name: 소개페이지
+      url: /about/
+      weight: 20
+    - identifier: gallery
+      name: 갤러리
+      url: /gallery/
+      weight: 30
+    - identifier: notice
+      name: Notice
+      url: /notice/
+      weight: 40
+
+params:
+  description: A Hugo-based homepage with Gallery and Notice boards managed through Decap CMS.

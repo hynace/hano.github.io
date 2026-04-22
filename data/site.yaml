@@ -1,0 +1,12 @@
+brand: HANO
+tagline: Research, Archive, and Notice
+hero_title: 구글 사이트처럼 단정하지만, 게시판 관리는 훨씬 덜 수동적인 홈페이지
+hero_lede: 메인에서는 최신 글이 자동으로 정렬되고, 갤러리와 Notice는 카드형 썸네일 게시판으로 정리됩니다.
+hero_support: 예전처럼 메인 썸네일 여섯 칸을 손으로 관리하거나, 숨겨 둔 페이지에 일일이 링크를 걸지 않아도 됩니다.
+overview_title: Site Overview
+overview_body: 상단 메뉴는 메인, 소개, 갤러리, Notice 네 축으로 단순하게 유지하고, 게시글은 Hugo 콘텐츠로 쌓아서 목록과 상세 페이지를 자동 생성합니다.
+workflow_title: CMS Workflow
+workflow_body: 각 게시판 상단의 작성 버튼은 Decap CMS로 연결됩니다. Gallery 또는 Notice 글을 추가하면 메인 최신글과 게시판 목록에 자동 반영됩니다.
+contact_email: contact@example.com
+footer_note: GitHub Pages + Hugo + Decap CMS
+hero_image: /images/hero-lab.svg

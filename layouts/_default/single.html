@@ -1,0 +1,27 @@
+{{ define "main" }}
+  {{ $thumb := .Params.thumbnail | default "/images/default-card.svg" }}
+  {{ $sectionPage := site.GetPage "section" .Section }}
+
+  <section class="section section--narrow">
+    <div class="container container--narrow">
+      <a class="inline-link" href="{{ $sectionPage.RelPermalink }}">{{ $sectionPage.Title }} 목록으로 돌아가기</a>
+
+      <article class="article">
+        <img class="article__image" src="{{ $thumb | relURL }}" alt="{{ .Title }}" />
+
+        <div class="article__header">
+          <p class="eyebrow">{{ if eq .Section "gallery" }}Gallery{{ else }}Notice{{ end }}</p>
+          <h1>{{ .Title }}</h1>
+          {{ with .Params.excerpt }}
+            <p class="article__excerpt">{{ . }}</p>
+          {{ end }}
+          <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006.01.02" }}</time>
+        </div>
+
+        <div class="article__content">
+          {{ .Content }}
+        </div>
+      </article>
+    </div>
+  </section>
+{{ end }}

@@ -1,0 +1,17 @@
+{{ $thumb := .Params.thumbnail | default "/images/default-card.svg" }}
+<article class="post-card">
+  <a class="post-card__thumb-link" href="{{ .RelPermalink }}">
+    <img class="post-card__thumb" src="{{ $thumb | relURL }}" alt="{{ .Title }}" />
+  </a>
+
+  <div class="post-card__body">
+    <p class="eyebrow">{{ if eq .Section "gallery" }}Gallery{{ else if eq .Section "notice" }}Notice{{ else }}Post{{ end }}</p>
+    <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+    {{ with .Params.excerpt }}
+      <p class="post-card__excerpt">{{ . }}</p>
+    {{ end }}
+    <div class="post-card__meta">
+      <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006.01.02" }}</time>
+    </div>
+  </div>
+</article>

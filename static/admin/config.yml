@@ -1,0 +1,102 @@
+backend:
+  name: github
+  repo: hynace/hano.github.io
+  branch: main
+  base_url: https://YOUR-OAUTH-DOMAIN
+  auth_endpoint: auth
+  use_graphql: true
+
+site_url: https://hynace.github.io
+display_url: https://hynace.github.io
+logo_url: /images/default-card.svg
+locale: ko
+media_folder: static/uploads
+public_folder: /uploads
+
+collections:
+  - name: settings
+    label: Site Settings
+    delete: false
+    editor:
+      preview: false
+    files:
+      - file: data/site.yaml
+        label: Homepage Settings
+        name: homepage
+        fields:
+          - { label: Brand, name: brand, widget: string }
+          - { label: Tagline, name: tagline, widget: string }
+          - { label: Hero Title, name: hero_title, widget: string }
+          - { label: Hero Lead, name: hero_lede, widget: text }
+          - { label: Hero Support Text, name: hero_support, widget: text }
+          - { label: Overview Title, name: overview_title, widget: string }
+          - { label: Overview Body, name: overview_body, widget: text }
+          - { label: Workflow Title, name: workflow_title, widget: string }
+          - { label: Workflow Body, name: workflow_body, widget: text }
+          - { label: Contact Email, name: contact_email, widget: string }
+          - { label: Footer Note, name: footer_note, widget: string }
+          - { label: Hero Image, name: hero_image, widget: image }
+
+  - name: pages
+    label: Pages
+    delete: false
+    editor:
+      preview: false
+    files:
+      - file: content/about/_index.md
+        label: 소개페이지
+        name: about_page
+        fields:
+          - { label: Title, name: title, widget: string }
+          - { label: Description, name: description, widget: text }
+          - { label: Body, name: body, widget: markdown }
+      - file: content/gallery/_index.md
+        label: Gallery Board
+        name: gallery_board
+        fields:
+          - { label: Title, name: title, widget: string }
+          - { label: Description, name: description, widget: text }
+          - { label: Lead, name: lead, widget: text }
+          - { label: Write Button Label, name: write_label, widget: string }
+          - { label: Body, name: body, widget: markdown }
+      - file: content/notice/_index.md
+        label: Notice Board
+        name: notice_board
+        fields:
+          - { label: Title, name: title, widget: string }
+          - { label: Description, name: description, widget: text }
+          - { label: Lead, name: lead, widget: text }
+          - { label: Write Button Label, name: write_label, widget: string }
+          - { label: Body, name: body, widget: markdown }
+
+  - name: gallery
+    label: Gallery
+    label_singular: Gallery Post
+    folder: content/gallery/posts
+    create: true
+    slug: "{{slug}}"
+    summary: "{{title}} | {{date}}"
+    editor:
+      preview: false
+    fields:
+      - { label: Title, name: title, widget: string }
+      - { label: Publish Date, name: date, widget: datetime, date_format: "YYYY-MM-DD", time_format: false }
+      - { label: Excerpt, name: excerpt, widget: text }
+      - { label: Thumbnail, name: thumbnail, widget: image }
+      - { label: Body, name: body, widget: markdown }
+
+  - name: notice
+    label: Notice
+    label_singular: Notice Post
+    folder: content/notice/posts
+    create: true
+    slug: "{{slug}}"
+    summary: "{{title}} | {{date}}"
+    editor:
+      preview: false
+    fields:
+      - { label: Title, name: title, widget: string }
+      - { label: Publish Date, name: date, widget: datetime, date_format: "YYYY-MM-DD", time_format: false }
+      - { label: Excerpt, name: excerpt, widget: text }
+      - { label: Thumbnail, name: thumbnail, widget: image }
+      - { label: Body, name: body, widget: markdown }

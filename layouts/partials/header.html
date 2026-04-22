@@ -1,0 +1,19 @@
+{{ $current := .RelPermalink }}
+<header class="site-header">
+  <div class="container site-header__inner">
+    <a class="brand" href="{{ "/" | relURL }}">
+      <span class="brand__dot"></span>
+      <span class="brand__text">{{ site.Data.site.brand }}</span>
+    </a>
+
+    <nav class="site-nav" aria-label="Primary navigation">
+      {{ range site.Menus.main }}
+        {{ $itemURL := .URL | relURL }}
+        {{ $active := or (eq $current $itemURL) (and (ne $itemURL "/") (hasPrefix $current $itemURL)) }}
+        <a class="site-nav__link{{ if $active }} is-active{{ end }}" href="{{ $itemURL }}">
+          {{ .Name }}
+        </a>
+      {{ end }}
+    </nav>
+  </div>
+</header>

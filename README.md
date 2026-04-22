@@ -1,52 +1,53 @@
-# Personal GitHub.io Blog Template
+# HANO Homepage
 
-GitHub Pages에서 바로 사용할 수 있는 **개인 홈페이지 + 게시판형 블로그** 템플릿입니다.
+`aiml-k.github.io`처럼 정적 생성기 기반으로 운영되는 홈페이지 구조를 참고해,
+메인 / 소개 / 갤러리 / Notice 흐름과 자동 게시판 관리를 `Hugo + GitHub Pages + Decap CMS`로 다시 만든 저장소입니다.
 
-## 구성 파일
+## 구조
 
-- `index.html`: 메인 페이지 (게시판 링크 + 최신 글 목록 + 글 작성 UI)
-- `board.html`: 게시판별 글 목록
-- `post.html`: 게시글 상세
-- `data/posts.json`: 기본 게시판/게시글 데이터 소스
-- `assets/app.js`: 데이터 로딩, 렌더링, 브라우저 저장(localStorage) 로직
-- `assets/styles.css`: 공통 스타일
+- `hugo.yaml`: Hugo 사이트 설정과 상단 메뉴
+- `content/about/_index.md`: 소개페이지
+- `content/gallery/_index.md`: 갤러리 게시판 소개
+- `content/notice/_index.md`: Notice 게시판 소개
+- `content/gallery/posts/*.md`: 갤러리 글
+- `content/notice/posts/*.md`: 공지 글
+- `layouts/`: Hugo 템플릿
+- `static/`: CSS, 이미지, CMS 정적 파일
+- `data/site.yaml`: 메인페이지 문구와 사이트 기본 정보
+- `.github/workflows/publish.yaml`: GitHub Pages 빌드/배포
 
-## 메인에서 바로 글 작성하기
+## 동작 방식
 
-메인 페이지의 `새 글 작성` 폼에서 글을 등록할 수 있습니다.
+- 메인 최신 글은 `Gallery`와 `Notice` 섹션의 글을 날짜 기준으로 자동 정렬해 노출합니다.
+- 게시판 목록은 해당 섹션의 글을 카드형 썸네일로 자동 렌더링합니다.
+- 게시글을 추가하면 상세 페이지 URL도 자동 생성됩니다.
+- 더 이상 메인 썸네일 여섯 칸이나 개별 게시글 링크를 손으로 관리할 필요가 없습니다.
 
-- 등록된 글은 브라우저의 `localStorage`에 저장됩니다.
-- 저장 즉시 메인 최신 글 목록/게시판 목록/상세 페이지에 반영됩니다.
-- 다른 브라우저나 기기에서는 공유되지 않습니다.
+## CMS
 
-## 게시판 추가 방법
+`/admin/` 경로에 Decap CMS를 붙였습니다.
 
-`data/posts.json`의 `boards` 배열에 아래 형식으로 추가합니다.
+관리 가능한 항목:
 
-```json
-{ "key": "travel", "label": "여행기록" }
+- `Site Settings`: 메인페이지 텍스트와 히어로 이미지
+- `Pages`: 소개페이지, Gallery 소개, Notice 소개
+- `Gallery`: 갤러리 글
+- `Notice`: 공지 글
+
+## 중요한 점
+
+GitHub Pages만으로는 Decap CMS GitHub 로그인이 끝나지 않습니다.
+
+`static/admin/config.yml`의 아래 값은 아직 자리표시자입니다.
+
+- `backend.base_url`
+
+이 값은 OAuth 프록시 도메인으로 교체해야 실제로 CMS 로그인이 됩니다. 자세한 내용은 [docs/cms-auth.md](docs/cms-auth.md)를 보면 됩니다.
+
+## 로컬 실행
+
+로컬에서 확인하려면 Hugo가 설치된 환경에서 아래처럼 실행하면 됩니다.
+
+```bash
+hugo server
 ```
-
-## 기본 게시글 추가 방법
-
-`data/posts.json`의 `posts` 배열에 아래 형식으로 추가합니다.
-
-```json
-{
-  "id": "my-post-id",
-  "board": "devlog",
-  "title": "글 제목",
-  "date": "2026-04-21",
-  "content": ["문단 1", "문단 2"]
-}
-```
-
-- `board`는 `boards[].key`와 동일해야 합니다.
-- 메인 페이지 최신 글 목록은 모든 게시판의 글을 날짜순으로 자동 표시합니다.
-
-## GitHub Pages 배포
-
-1. 이 저장소를 GitHub에 push
-2. 저장소 Settings → Pages 진입
-3. Source를 현재 브랜치(예: `main`)의 `/ (root)`로 선택
-4. 배포 완료 후 `https://<username>.github.io/<repo>/` 접속
